@@ -1,0 +1,10 @@
+delegate-to-agents
+Copyright (c) 2026 Joseph Yaduvanshi
+
+This project is adapted from the "autonomous-ai-agents" skill in
+NousResearch/hermes-agent (https://github.com/NousResearch/hermes-agent),
+Copyright (c) Nous Research, licensed under the MIT License.
+
+The orchestration patterns and the per-agent driver structure originate there.
+The Claude Code translation, the verified CLI flags, and the additional drivers
+are original to this project.
