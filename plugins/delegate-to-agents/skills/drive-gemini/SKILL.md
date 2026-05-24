@@ -31,6 +31,10 @@ command -v gemini && gemini --version
 Gemini defaults to **interactive** mode; a bare positional prompt opens the TUI.
 For automation you MUST pass `-p`/`--prompt`.
 
+If the working directory isn't trusted (a fresh dir, `/tmp`, etc.), even a
+headless `-p` run is blocked by the trust gate. Add `--skip-trust` (or set
+`GEMINI_CLI_TRUST_WORKSPACE=true`). Already-trusted project dirs don't need it.
+
 ```
 # headless, capture stdout
 Bash(command="cd /repo && gemini -p 'Explain what src/server.ts does and list its exports'", timeout=300000)

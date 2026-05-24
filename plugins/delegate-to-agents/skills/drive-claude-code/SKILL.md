@@ -52,7 +52,7 @@ Bash(command="cd /repo && claude -p 'Refactor the database layer' --max-turns 20
 | Flag | Effect |
 |------|--------|
 | `-p, --print` | Non-interactive; exits when done |
-| `--max-budget-usd <n>` | **Documented** spend cap (print mode; min ~$0.05) — the primary bound |
+| `--max-budget-usd <n>` | **Documented** spend cap (print mode) — the primary bound. Very low values are rejected outright (e.g. `0.10` errors "Exceeded USD budget" on some accounts); use a realistic cap like `1` or fall back to `--max-turns` |
 | `--max-turns <n>` | Caps agentic loops (print mode). Not shown in `--help` as of 2.1.150 but accepted at runtime — useful, but prefer `--max-budget-usd` as the guaranteed bound |
 | `--output-format <fmt>` | `text`, `json`, `stream-json` |
 | `--json-schema <schema>` | Structured output |
