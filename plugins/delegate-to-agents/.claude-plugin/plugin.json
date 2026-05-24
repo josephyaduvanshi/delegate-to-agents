@@ -1,0 +1,20 @@
+{
+  "name": "delegate-to-agents",
+  "version": "0.1.0",
+  "description": "Delegate coding/research tasks from Claude Code to external AI coding-agent CLIs (Codex, Gemini, Qwen, OpenClaude, OpenCode) and to Claude subagents. Umbrella router + per-agent driver skills + parallel/reconciliation patterns. Ported from the Nous Research hermes-agent autonomous-ai-agents skill.",
+  "author": {
+    "name": "Joseph Yadav"
+  },
+  "keywords": [
+    "delegation",
+    "subagents",
+    "codex",
+    "gemini",
+    "qwen",
+    "openclaude",
+    "opencode",
+    "orchestration",
+    "parallel-agents"
+  ],
+  "license": "MIT"
+}

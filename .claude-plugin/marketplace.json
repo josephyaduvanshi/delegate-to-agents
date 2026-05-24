@@ -1,0 +1,21 @@
+{
+  "name": "delegate-to-agents",
+  "owner": {
+    "name": "Joseph Yadav"
+  },
+  "metadata": {
+    "description": "Umbrella plugin for delegating coding/research tasks from Claude Code to external AI coding-agent CLIs (Codex, Gemini, Qwen, OpenClaude, OpenCode) and to Claude subagents. Ported from the Nous Research hermes-agent autonomous-ai-agents skill.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "delegate-to-agents",
+      "description": "Delegate tasks from Claude Code to external coding-agent CLIs and Claude subagents, with parallel and reconciliation patterns.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Joseph Yadav"
+      },
+      "source": "./plugins/delegate-to-agents"
+    }
+  ]
+}
