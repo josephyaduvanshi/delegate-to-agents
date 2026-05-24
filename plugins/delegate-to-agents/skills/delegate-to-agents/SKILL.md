@@ -129,6 +129,37 @@ When a driven patch needs review before you keep it, switch to the
 `multi-agent-lane` skill (isolated worktree → review diff → run tests yourself →
 accept / partial / reject).
 
+## Delegating write tasks: pre-authorize, because the driver can't answer prompts
+
+The `cli-delegate` path runs each CLI **non-interactively** (no PTY). If the
+agent stops to ask "apply this edit? [y/n]", nothing can answer it — the run
+stalls, or the write is silently skipped. (Verified: a plain `claude -p` write
+task makes no changes; it just explains it *can't* and asks to be allowed.) So a
+write delegation has to pre-authorize writes up front.
+
+Use the **scoped** auto-write mode for the agent — not blanket yolo:
+
+| Agent | Let it edit files (scoped) | Also needs, to run tests / git / arbitrary shell |
+|-------|---------------------------|--------------------------------------------------|
+| Codex | `-s workspace-write` | covered — runs commands in the workspace sandbox |
+| Gemini | `--approval-mode auto_edit` | `--approval-mode yolo` for free shell |
+| Qwen | `--approval-mode auto-edit` | `--approval-mode yolo` for free shell |
+| OpenClaude / Claude | `--permission-mode acceptEdits` | widen `--allowedTools` to include `Bash`, or `--permission-mode bypassPermissions` |
+
+`acceptEdits` / `auto_edit` auto-approve **file edits only**. If the task also
+runs tests, installs deps, or commits, the agent needs shell access too — widen
+`--allowedTools`, or step up a level.
+
+**Full bypass** — `codex --dangerously-bypass-approvals-and-sandbox`,
+`gemini`/`qwen -y` (yolo), `claude`/`openclaude --dangerously-skip-permissions` —
+removes every gate. Reserve it for an **isolated or throwaway dir**: a git
+worktree (see `multi-agent-lane`) or a scratch clone, never the user's main
+checkout.
+
+Alternative: drive interactively over tmux and answer prompts yourself with
+`tmux send-keys -t <s> 'y' Enter`. More control, more fragile — prefer scoped
+auto-approve for one-shots.
+
 ## Safety rules (always)
 
 1. **Preflight every CLI** (`command -v`, `--version`, auth) before delegating.

@@ -37,7 +37,14 @@ you chose and why.
 2. **Preflight** with one `Bash` call: `command -v <cli>`, `<cli> --version`, and
    the driver's auth check. If the CLI is missing or unauthenticated, STOP and
    return that plainly — do not attempt the task by hand.
-3. **Run the CLI non-interactively** in `workdir`, scoped per the brief:
+3. **Run the CLI non-interactively** in `workdir`, scoped per the brief. **If the
+   task writes files, you MUST pass the agent's scoped auto-approve flag** — you
+   have no PTY to answer a permission prompt, so without it the write silently
+   doesn't happen. Per the driver's "write tasks" guidance: Codex `-s
+   workspace-write`; Gemini `--approval-mode auto_edit`; Qwen `--approval-mode
+   auto-edit`; Claude/OpenClaude `--permission-mode acceptEdits` (plus `Bash` in
+   `--allowedTools` if it must run tests/git). Reserve full bypass/yolo for an
+   isolated or throwaway dir.
    - **Expected < ~8 min:** one foreground `Bash` call with a generous `timeout`
      (up to 600000 ms). Capture stdout/stderr.
    - **Longer / open-ended:** launch with `run_in_background: true` redirected to

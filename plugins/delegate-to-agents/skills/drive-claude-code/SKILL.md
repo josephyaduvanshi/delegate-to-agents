@@ -43,8 +43,9 @@ Bash(command="cd /repo && claude -p 'Audit auth.py for security issues' --output
 # pipe content in
 Bash(command="git -C /repo diff main...feature | claude -p 'Review this diff for bugs and missing tests' --max-turns 1", timeout=180000)
 
-# long task: detach + log
-Bash(command="cd /repo && claude -p 'Refactor the database layer' --max-turns 20 > /tmp/agent-claude.log 2>&1", run_in_background=true)
+# long WRITE task: detach + log. --permission-mode acceptEdits lets it edit files
+# non-interactively; add Bash to --allowedTools (or bypassPermissions) if it must run tests/git.
+Bash(command="cd /repo && claude -p 'Refactor the database layer' --permission-mode acceptEdits --allowedTools 'Read,Edit,Write,Bash' --max-turns 20 > /tmp/agent-claude.log 2>&1", run_in_background=true)
 ```
 
 ### Key flags (delegation-relevant)
@@ -101,6 +102,9 @@ Bash(command="cd /tmp/cc-b && claude -p 'Build feature B' --max-turns 15 > /tmp/
 2. **`-p` for automation** — skips dialogs, supports JSON output.
 3. **Bound every print-mode run** — `--max-budget-usd` is the documented cap;
    `--max-turns` also works (hidden but accepted) and is worth adding too.
-4. **`--allowedTools`** to restrict to what the task needs (e.g. `Read` for review).
+4. **Write tasks need a write flag.** In `-p` mode a plain run can't edit — pass
+   `--permission-mode acceptEdits` (file edits) and add `Bash` to `--allowedTools`
+   if it must run tests/git. Use `--allowedTools` to restrict to what's needed
+   (e.g. `Read` for a review).
 5. **One worktree per parallel process**; clean up tmux sessions and logs.
 6. **Review and re-run tests yourself** before keeping changes.
